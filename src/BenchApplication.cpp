@@ -210,6 +210,10 @@ void BenchApplication::ExportCPUInfo( ut::BinaryBuffer& buffer ) const
 		}
 		print( buffer, "\n" );
 		break;
+	case CPUArch::CPU_E2K:
+		print( buffer, " E2K FPU");
+		print( buffer, "\n" );
+		break;
 	default:
 		print( buffer, "\n" );
 		break;

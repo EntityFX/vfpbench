@@ -369,7 +369,7 @@ void SystemInfo::DecodeCpuInfo()
 				info_devname= true;
 			}
 #endif
-#if FL_CPU_X64 || FL_CPU_X86
+#if FL_CPU_X64 || FL_CPU_X86 || FL_CPU_E2K
 			if( !strncmp( linebuffer, "model name", 10 ) ){
 				char*	lp= SkipColon( linebuffer );
 				lp= SkipSpace( lp );
@@ -835,7 +835,7 @@ void SystemInfo::DumpCpuGroup() const
 #define	DEF_CPUFEATURE_NAME_IA(name)	{	#name, CPUFeature::IA_##name	}
 #define	DEF_CPUFEATURE_NAME_ARM(name)	{	#name, CPUFeature::ARM_##name	}
 #define	DEF_CPUFEATURE_NAME_MIPS(name)	{	#name, CPUFeature::MIPS_##name	}
-#define DEF_CPUFEATURE_NAME_E2K(name)   {   #name, CPUFeature::E2K_##name   }
+#define DEF_CPUFEATURE_NAME_E2K(name)	{	#name, CPUFeature::E2K_##name	}
 CPUFeatureNameTable	SystemInfo::FeatureNameTable[]= {
 DEF_CPUFEATURE_NAME_IA( SSE ),
 DEF_CPUFEATURE_NAME_IA( SSE2 ),
@@ -1014,7 +1014,7 @@ const char* SystemInfo::GetArchNameLong() const
 #elif FL_CPU_MIPS64
 	return	"MIPS64";
 #elif FL_CPU_E2K
-	return	"Elbrus 2000";	
+	return	"e2k (Elbrus 2000)";	
 #else
 	return	"Unknown";
 #endif

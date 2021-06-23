@@ -30,6 +30,7 @@ src_list= [
         'src/VFP64HP_Test.cpp',
         'src/MIPSSP_Test.cpp',
         'src/MIPSDP_Test.cpp',
+        'src/E2KSP_Test.cpp',
         'src/ResultData.cpp',
         'src/BenchApplication.cpp',
         'src/BenchmarkTest.cpp',
