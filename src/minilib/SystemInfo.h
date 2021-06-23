@@ -20,6 +20,7 @@ enum class CPUArch : unsigned int {
 	CPU_X64,		// Linux, Android, Termux, Windows
 	CPU_MIPS32,		// Android
 	CPU_MIPS64,		// Android
+	CPU_E2K,		// Linux
 //	CPU_PPC64,		// PS3 Linux
 };
 
@@ -64,6 +65,9 @@ enum class CPUFeature : unsigned int {
 	MIPS_MSA,
 	MIPS_F64,
 	MIPS_PS,
+	//--
+	E2K,
+	E2K_V5,
 	//--
 	FEATURE_MAX,
 };

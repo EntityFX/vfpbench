@@ -76,6 +76,8 @@
 # elif defined(__aarch64__)
 #  define	FL_CPU_ARM64			1
 #  define	FL_CPU_NEON			1
+# elif defined(__e2k__)
+#  define   FL_CPU_E2K          1
 # elif defined(__i386__)
 #  define	FL_CPU_X86			1
 # elif defined(__ARM_ARCH_6__)
@@ -181,7 +183,9 @@
 #ifndef	FL_CPU_PPC64
 # define	FL_CPU_PPC64			0
 #endif
-
+#ifndef FL_CPU_E2K
+# define    FL_CPU_E2K          0
+#endif
 
 #ifndef	FL_CPU_NEON
 # define	FL_CPU_NEON			0

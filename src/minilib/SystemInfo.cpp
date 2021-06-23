@@ -309,6 +309,9 @@ void SystemInfo::DecodeCpuInfo()
 #if FL_CPU_X64 || FL_CPU_X86
 				!strncmp( linebuffer, "flags", 5 )
 #endif
+#if FL_CPU_E2K
+                false
+#endif
 					){
 				char*	lp= SkipColon( linebuffer );
 				if( *lp ){
@@ -769,6 +772,17 @@ void	SystemInfo::GetCPUSpecification()
 //-----------------------------------------------------------------------------
 
 
+//-----------------------------------------------------------------------------
+#if FL_CPU_E2K
+//-----------------------------------------------------------------------------
+
+void    SystemInfo::GetCPUSpecification()
+{
+}
+
+//-----------------------------------------------------------------------------
+#endif
+//-----------------------------------------------------------------------------
 
 
 //=============================================================================
@@ -821,6 +835,7 @@ void SystemInfo::DumpCpuGroup() const
 #define	DEF_CPUFEATURE_NAME_IA(name)	{	#name, CPUFeature::IA_##name	}
 #define	DEF_CPUFEATURE_NAME_ARM(name)	{	#name, CPUFeature::ARM_##name	}
 #define	DEF_CPUFEATURE_NAME_MIPS(name)	{	#name, CPUFeature::MIPS_##name	}
+#define DEF_CPUFEATURE_NAME_E2K(name)   {   #name, CPUFeature::E2K_##name   }
 CPUFeatureNameTable	SystemInfo::FeatureNameTable[]= {
 DEF_CPUFEATURE_NAME_IA( SSE ),
 DEF_CPUFEATURE_NAME_IA( SSE2 ),
@@ -970,6 +985,8 @@ CPUArch	SystemInfo::GetArch() const
 	return	CPUArch::CPU_MIPS32;
 #elif FL_CPU_MIPS64
 	return	CPUArch::CPU_MIPS64;
+#elif FL_CPU_E2K
+	return	CPUArch::CPU_E2K;
 #else
 	return	CPUArch::CPU_UNKNOWN;
 #endif
@@ -996,6 +1013,8 @@ const char* SystemInfo::GetArchNameLong() const
 	return	"MIPS32";
 #elif FL_CPU_MIPS64
 	return	"MIPS64";
+#elif FL_CPU_E2K
+	return	"Elbrus 2000";	
 #else
 	return	"Unknown";
 #endif
@@ -1019,6 +1038,8 @@ const char* SystemInfo::GetArchNameShort() const
 	return	"MIPS32";
 #elif FL_CPU_MIPS64
 	return	"MIPS64";
+#elif FL_CPU_E2K
+	return	"e2k";	
 #else
 	return	"Unknown";
 #endif

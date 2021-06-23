@@ -251,7 +251,22 @@ public:
 //-----------------------------------------------------------------------------
 
 
+#if FL_CPU_E2K
 
+# include       "E2KSP_Test.h"
+# include       "E2KDP_Test.h"
+
+typedef E2KSP::FloatTest                FPU_SP_Test;
+typedef E2KDP::FloatTest                FPU_DP_Test;
+
+class BenchmarkTest : public BenchmarkTestBase {
+public:
+        BenchmarkTest()
+        {
+        }
+};
+
+#endif
 
 
 
