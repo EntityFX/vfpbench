@@ -263,7 +263,7 @@ class BenchmarkTest : public BenchmarkTestBase {
 public:
         BenchmarkTest()
         {
-    	    unsigned int	group_count= Init( 2 );
+    	    unsigned int	group_count= Init( 1 );
 	    for( unsigned int gi= 0 ; gi< group_count ; gi++ ){
 		AddBenchSingle<FPU_SP_Test>( gi );
 		//AddBenchSingle<FPU_DP_Test>( gi );

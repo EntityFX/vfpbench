@@ -103,6 +103,8 @@ def addCustomBuild( env, TargetName, src_list, config ):
                 global get_arm64_arch
                 if local_env.getTargetPlatform() == 'Linux':
                     local_env.addCCFlags( ['-march=' + get_arm64_arch( env ) ] )
+        if arch == 'e2k':
+            local_env.addCCFlags( ['-O4', '-ffast-math'] )
         if config == 'Release':
             exe_name= TargetName
         else:
