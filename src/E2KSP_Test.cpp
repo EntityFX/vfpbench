@@ -184,8 +184,14 @@ FloatTest::FloatTest()
     SetOp( RESULT_SSE_MULSS_IR8,		PER_LOOP_INST * 1, 1	);
     SetOp( RESULT_SSE_ADDSS_IR8,		PER_LOOP_INST * 1, 1	);
     
+    SetOp( RESULT_SSE_MULPS_IR8,		PER_LOOP_INST * 4, 4	);
+    SetOp( RESULT_SSE_ADDPS_IR8,		PER_LOOP_INST * 4, 4	);
+    
     SetOp( RESULT_SSE_MULSS_IRS4,		PER_LOOP_INST * 1, 1	);
     SetOp( RESULT_SSE_ADDSS_IRS4,		PER_LOOP_INST * 1, 1	);
+    
+    SetOp( RESULT_SSE_MULPS_IRS4,		PER_LOOP_INST * 4, 4	);
+    SetOp( RESULT_SSE_ADDPS_IRS4,		PER_LOOP_INST * 4, 4	);
 }
 
 //-----------------------------------------------------------------------------
@@ -194,9 +200,13 @@ FloatTest::FloatTest()
 
 SSE_S_IR8( _mm_mul_ss,  mulss_ir8 );
 SSE_S_IR8( _mm_add_ss,  addss_ir8 );
+SSE_S_IR8( _mm_mul_ps,  mulps_ir8 );
+SSE_S_IR8( _mm_add_ps,  addps_ir8 );
 
 SSE_S_IRS4( _mm_mul_ss,  mulss_irs4 );
 SSE_S_IRS4( _mm_add_ss,  addss_irs4 );
+SSE_S_IRS4( _mm_mul_ps,  mulps_irs4 );
+SSE_S_IRS4( _mm_add_ps,  addps_irs4 );
 
 void FloatTest::Run()
 {
@@ -215,6 +225,12 @@ void FloatTest::Run()
     SetResult( RESULT_SSE_ADDSS_IR8,	SSE_S_IR8_addss_ir8( Loop,  std::numeric_limits<float>::infinity(),  1e-35f, 1e-35f		) );
     Progress++;
 
+    SetResult( RESULT_SSE_MULPS_IR8,	SSE_S_IR8_mulps_ir8( Loop, 0.0f,	0.9999f, 0.9998f	) );
+    Progress++;
+
+    SetResult( RESULT_SSE_ADDPS_IR8,	SSE_S_IR8_addps_ir8( Loop,  std::numeric_limits<float>::infinity(),  1e-35f, 1e-35f		) );
+    Progress++;
+
   //------------------------------------------------------
   //------------------------------------------------------
   
@@ -225,6 +241,12 @@ void FloatTest::Run()
     Progress++;
 
     SetResult( RESULT_SSE_ADDSS_IRS4,	SSE_S_IRS4_addss_irs4( Loop, std::numeric_limits<float>::infinity(),  1e-35f, 1e-35f) );
+    Progress++;
+    
+    SetResult( RESULT_SSE_MULPS_IRS4,	SSE_S_IRS4_mulps_irs4( Loop, 0.0f,	0.9999f, 0.9998f	) );
+    Progress++;
+
+    SetResult( RESULT_SSE_ADDPS_IRS4,	SSE_S_IRS4_addps_irs4( Loop,  std::numeric_limits<float>::infinity(),  1e-35f, 1e-35f		) );
     Progress++;
 
     DoneFlag= true;
