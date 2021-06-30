@@ -155,15 +155,154 @@ static uint64_t SSE_S_IRS4_##name( CounterType LoopCount,\
 #define SSE_S_IRS4(op,name) SSE_S_IRS4_0(op, #op, name)
 
 //-----------------------------------------------------------------------------
+// Single Interleave 8 MAD
+//-----------------------------------------------------------------------------
+
+#define SSE_M_IR8_8(op1,op2) \
+  A = op1(A,A);          \
+  B = op2(B,B);	        \
+  C = op1(C,C);	        \
+  D = op2(D,D);	        \
+  E = op1(E,E);	        \
+  F = op2(F,F);	        \
+  G = op1(G,G);	        \
+  H = op2(H,H);
+  
+#define SSE_M_IR8_0(op1, op2, op1_str, op2_str, name) \
+static uint64_t SSE_M_IR8_##name( CounterType LoopCount,\
+                     float answer ) \
+{                                                       \
+  float	ret0, ret1, ret2, ret3, ret4, ret5, ret6, ret7;	\
+  float fp0 = 1.0;                                       \
+  float fp1 = 2.0;                                      \
+    TimerClass	timer;			                              \
+    timer.Begin();				                                \
+  __m128 A = _mm_load1_ps (&fp0);                        \
+  __m128 B = _mm_load1_ps (&fp0);                        \
+  __m128 C = _mm_load1_ps (&fp0);                        \
+  __m128 D = _mm_load1_ps (&fp0);                        \
+  __m128 E = _mm_load1_ps (&fp1);                        \
+  __m128 F = _mm_load1_ps (&fp1);                        \
+  __m128 G = _mm_load1_ps (&fp1);                        \
+  __m128 H = _mm_load1_ps (&fp1);                        \
+  for (CounterType loop = 0; loop < LoopCount; loop++) {\
+    SSE_M_IR8_8( op1,op2 )	                                  \
+    SSE_M_IR8_8( op1,op2 )	                                  \
+    SSE_M_IR8_8( op1,op2 )	                                  \
+    SSE_M_IR8_8( op1,op2 )	                                  \
+    SSE_M_IR8_8( op1,op2 )	                                  \
+  }                                                     \
+  ret0 = _mm_cvtss_f32(A);                              \
+  ret1 = _mm_cvtss_f32(B);                              \
+  ret2 = _mm_cvtss_f32(C);                              \
+  ret3 = _mm_cvtss_f32(D);                              \
+  ret4 = _mm_cvtss_f32(E);                              \
+  ret5 = _mm_cvtss_f32(F);                              \
+  ret6 = _mm_cvtss_f32(G);                              \
+  ret7 = _mm_cvtss_f32(H);                              \
+    timer.End();		                                      \
+    timer.Dump( op1_str );                                 \
+    timer.Dump( op2_str );                                 \
+    FL_LOG( "%f %f %f %f %f %f %f %f\n",                  \
+       ret0, ret1, ret2, ret3, ret4, ret5, ret6, ret7 );\
+    check_result( ret0, answer );	                        \
+    check_result( ret1, answer );	                        \
+    check_result( ret2, answer );	                        \
+    check_result( ret3, answer );	                        \
+    check_result( ret4, answer );	                        \
+    check_result( ret5, answer );	                        \
+    check_result( ret6, answer );	                        \
+    check_result( ret7, answer );	                        \
+    return	timer.Result();	                              \
+}
+
+#define SSE_M_IR8(op1,op2,name) SSE_M_IR8_0(op1, op2, #op1, #op2, name)
+
+
+//-----------------------------------------------------------------------------
+// Single Interleave 8 MAD op3
+//-----------------------------------------------------------------------------
+
+
+#define SSE_M_IR9_9(op1,op2,op3) \
+  A = op1(A,A);          \
+  B = op2(B,B);	         \
+  C = op3(C,C);	         \
+  D = op1(D,D);	         \
+  E = op2(E,E);	         \
+  F = op3(F,F);	         \
+  G = op1(G,G);	         \
+  H = op2(H,H);	         \
+  J = op3(J,J);
+
+
+#define SSE_M_IR9_0(op1, op2, op3, op_str1, op_str2, op_str3, name) \
+static uint64_t SSE_M_IR9_##name( CounterType LoopCount,\
+                     float answer ) \
+{                                                       \
+  float	ret0, ret1, ret2, ret3, ret4, ret5, ret6, ret7;	\
+  float fp0 = 2.0; \
+  float fp1 = 5.0; \
+    TimerClass	timer;			                              \
+    timer.Begin();				                                \
+  __m128 A = _mm_load1_ps (&fp0);                        \
+  __m128 B = _mm_load1_ps (&fp1);                        \
+  __m128 C = _mm_load1_ps (&fp0);                        \
+  __m128 D = _mm_load1_ps (&fp1);                        \
+  __m128 E = _mm_load1_ps (&fp0);                        \
+  __m128 F = _mm_load1_ps (&fp1);                        \
+  __m128 G = _mm_load1_ps (&fp0);                        \
+  __m128 H = _mm_load1_ps (&fp1);                        \
+  __m128 J = _mm_load1_ps (&fp0);                        \
+  for (CounterType loop = 0; loop < LoopCount; loop++) {\
+	SSE_M_IR9_9( op1,op2,op3 )	\
+	SSE_M_IR9_9( op1,op2,op3 )	\
+	SSE_M_IR9_9( op1,op2,op3 )	\
+	SSE_M_IR9_9( op1,op2,op3 )	\
+	SSE_M_IR9_9( op1,op2,op3 )	\
+  }                                                     \
+  ret0 = _mm_cvtss_f32(A);                              \
+  ret1 = _mm_cvtss_f32(B);                              \
+  ret2 = _mm_cvtss_f32(C);                              \
+  ret3 = _mm_cvtss_f32(D);                              \
+  ret4 = _mm_cvtss_f32(E);                              \
+  ret5 = _mm_cvtss_f32(F);                              \
+  ret6 = _mm_cvtss_f32(G);                              \
+  ret7 = _mm_cvtss_f32(H);                              \
+    timer.End();		                                   \
+    timer.Dump( op_str1 );                                 \
+    timer.Dump( op_str2 );                                 \
+    timer.Dump( op_str3 );                                 \
+    FL_LOG( "%f %f %f %f %f %f %f %f\n",                  \
+       ret0, ret1, ret2, ret3, ret4, ret5, ret6, ret7 );\
+    check_result( ret0, answer );	                        \
+    check_result( ret1, answer );	                        \
+    check_result( ret2, answer );	                        \
+    check_result( ret3, answer );	                        \
+    check_result( ret4, answer );	                        \
+    check_result( ret5, answer );	                        \
+    check_result( ret6, answer );	                        \
+    check_result( ret7, answer );	                        \
+    return	timer.Result();	                              \
+}
+
+#define SSE_M_IR9(op1,op2,op3,name) SSE_M_IR9_0(op1, op2, op3, #op1, #op2, #op3, name)
+
+
+
+//-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
 static const char*	Instruction_Title[]= {
     "fmuls (mulss) (32bit x1) n8",
     "fadds (addss) (32bit x1) n8",
-    
+
     "fmulps (mulps) (32bit x4) n8",
     "faddps (addps) (32bit x4) n8",
-    
+    "mul+addps (32bit x4) n8",
+
+    "ml+ad+addps (32bit x4) n9",
+
     "fmulss (mulss) (32bit x1) ns4",
     "faddss (addss) (32bit x1) ns4",
 
@@ -183,13 +322,16 @@ FloatTest::FloatTest()
 
     SetOp( RESULT_SSE_MULSS_IR8,		PER_LOOP_INST * 1, 1	);
     SetOp( RESULT_SSE_ADDSS_IR8,		PER_LOOP_INST * 1, 1	);
-    
+
     SetOp( RESULT_SSE_MULPS_IR8,		PER_LOOP_INST * 4, 4	);
     SetOp( RESULT_SSE_ADDPS_IR8,		PER_LOOP_INST * 4, 4	);
-    
+    SetOp( RESULT_SSE_MULPS_ADDPS_IR8,		PER_LOOP_INST * 4, 4	);
+
+    SetOp( RESULT_SSE_ML_AD_ADDPS_IR9,		PER_LOOP_INST_9 * 4, 4	);
+
     SetOp( RESULT_SSE_MULSS_IRS4,		PER_LOOP_INST * 1, 1	);
     SetOp( RESULT_SSE_ADDSS_IRS4,		PER_LOOP_INST * 1, 1	);
-    
+
     SetOp( RESULT_SSE_MULPS_IRS4,		PER_LOOP_INST * 4, 4	);
     SetOp( RESULT_SSE_ADDPS_IRS4,		PER_LOOP_INST * 4, 4	);
 }
@@ -200,11 +342,16 @@ FloatTest::FloatTest()
 
 SSE_S_IR8( _mm_mul_ss,  mulss_ir8 );
 SSE_S_IR8( _mm_add_ss,  addss_ir8 );
+
 SSE_S_IR8( _mm_mul_ps,  mulps_ir8 );
 SSE_S_IR8( _mm_add_ps,  addps_ir8 );
+SSE_M_IR8(_mm_mul_ps, _mm_add_ps,  mulps_addps_ir8 );
+
+SSE_M_IR9( _mm_mul_ps, _mm_add_ps, _mm_add_ps, ml_ad_addps_ir9 );
 
 SSE_S_IRS4( _mm_mul_ss,  mulss_irs4 );
 SSE_S_IRS4( _mm_add_ss,  addss_irs4 );
+
 SSE_S_IRS4( _mm_mul_ps,  mulps_irs4 );
 SSE_S_IRS4( _mm_add_ps,  addps_irs4 );
 
@@ -219,21 +366,31 @@ void FloatTest::Run()
   // IR8
   //------------------------------------------------------
 
-    SetResult( RESULT_SSE_MULSS_IR8,	SSE_S_IR8_mulss_ir8( Loop, 0.0f,	0.9999f, 0.9998f	) );
+    SetResult( RESULT_SSE_MULSS_IR8,	SSE_S_IR8_mulss_ir8( Loop, 10.0f,	0.9999f, 0.9998f	) );
     Progress++;
 
-    SetResult( RESULT_SSE_ADDSS_IR8,	SSE_S_IR8_addss_ir8( Loop,  std::numeric_limits<float>::infinity(),  1e-35f, 1e-35f		) );
+    SetResult( RESULT_SSE_ADDSS_IR8,	SSE_S_IR8_addss_ir8( Loop, 10.0f,	1e-35f, 1e-35f		) );
     Progress++;
 
-    SetResult( RESULT_SSE_MULPS_IR8,	SSE_S_IR8_mulps_ir8( Loop, 0.0f,	0.9999f, 0.9998f	) );
+    SetResult( RESULT_SSE_MULPS_IR8,	SSE_S_IR8_mulps_ir8( Loop, 10.0f,	0.9999f, 0.9998f	) );
     Progress++;
 
-    SetResult( RESULT_SSE_ADDPS_IR8,	SSE_S_IR8_addps_ir8( Loop,  std::numeric_limits<float>::infinity(),  1e-35f, 1e-35f		) );
+    SetResult( RESULT_SSE_ADDPS_IR8,	SSE_S_IR8_addps_ir8( Loop, 10.0f,	1e-35f, 1e-35f		) );
     Progress++;
+
+    SetResult( RESULT_SSE_MULPS_ADDPS_IR8,	SSE_M_IR8_mulps_addps_ir8( Loop, 10.0f		) );
+    Progress.Increment();
 
   //------------------------------------------------------
   //------------------------------------------------------
-  
+
+    //------------------------------------------------------
+    // IR9
+    //------------------------------------------------------
+
+    SetResult( RESULT_SSE_ML_AD_ADDPS_IR9,	SSE_M_IR9_ml_ad_addps_ir9( Loop,  10.0f ) );
+    Progress++;
+
     //------------------------------------------------------
     // IRS4
     //------------------------------------------------------
