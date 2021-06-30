@@ -96,14 +96,14 @@ static uint64_t SSE_S_IR8_##name( CounterType LoopCount,\
 
 
 #define SSE_S_IRS4_8(op) \
-  A = op(A,A);          \
-  B = op(B,B);	        \
-  C = op(C,C);	        \
-  D = op(D,D);	        \
-  E = op(E,E);	        \
-  F = op(F,F);	        \
-  G = op(G,G);	        \
-  H = op(H,H);
+  A = op(A,E);          \
+  B = op(B,F);	        \
+  C = op(C,G);	        \
+  D = op(D,H);	        \
+  E = op(E,A);	        \
+  F = op(F,B);	        \
+  G = op(G,C);	        \
+  H = op(H,D);
   
 #define SSE_S_IRS4_0(op, op_str, name) \
 static uint64_t SSE_S_IRS4_##name( CounterType LoopCount,\
