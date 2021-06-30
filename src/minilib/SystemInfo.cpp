@@ -235,6 +235,30 @@ void SystemInfo::DecodeCpuTopologyImmediate()
 			core.ClusterGroupID= group->second;
 		}
 	}
+	
+#if FL_CPU_E2K
+    const int   MAX_LINE_BYTE= 1024 * 2;
+    char        linebuffer[MAX_LINE_BYTE+8];
+    FILE*       fp= fopen( "/proc/cpuinfo", "r" );
+    if( !fp ){
+        return;
+    }
+
+    unsigned int currentCore= 0;
+    for(; fgets( linebuffer, MAX_LINE_BYTE, fp ) ;){
+            if( !strncmp( linebuffer, "cpu MHz", 7 ) ){
+                char*   cpuMhzStr= SkipColon( linebuffer );
+                cpuMhzStr= SkipSpace( cpuMhzStr );
+                unsigned int cpuMhz= atoi( cpuMhzStr );
+                cpuMhz= cpuMhz * 1000;
+                auto& core= CoreList[currentCore];
+                core.CoreClock= cpuMhz;
+                currentCore++;
+            }
+    }
+    fclose( fp );
+#endif
+
 }
 
 
